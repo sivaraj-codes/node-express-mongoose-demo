@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 
 export const connectDB = async () => {
+  if (mongoose.connection.readyState === 1) {
+    return mongoose.connection;
+  }
   // mongoose.connect() manages the connection pool internally.
   // No need for a manual client singleton like the native driver.
   await mongoose.connect(process.env.MONGODB_URI, {
