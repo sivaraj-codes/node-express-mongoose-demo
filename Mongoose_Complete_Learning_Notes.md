@@ -171,7 +171,7 @@ MongoDB
 
 ```js
 updateOne(
-  { _id: id },
+  { _id: new ObjectId(id) },
   { $set: data }
 );
 ```
@@ -193,7 +193,7 @@ await User.findByIdAndUpdate(
 MongoDB
 
 ```js
-deleteOne({ _id: id });
+deleteOne({ _id: new ObjectId(id) });
 ```
 
 Mongoose
