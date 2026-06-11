@@ -517,40 +517,72 @@ All must succeed or fail together.
 ```js
 const session =
   await mongoose.startSession();
-```
-
-```js
 session.startTransaction();
+
+await session.commitTransaction();  ->TRY
+
+await session.abortTransaction(); ->CATCH
+throw error;
+
+
+session.endSession(); ->FINALLY
+
 ```
 
 Example:
 
 ```js
-try {
+import mongoose from "mongoose";
+import User from "./user.model.js";
 
-  await User.updateOne(
-    { _id: sender },
-    {
-      $inc: { balance: -100 }
-    },
-    { session }
-  );
+export const transferMoney =
+  async (
+    senderId,
+    receiverId,
+    amount
+  ) => {
 
-  await User.updateOne(
-    { _id: receiver },
-    {
-      $inc: { balance: 100 }
-    },
-    { session }
-  );
+    const session =
+      await mongoose.startSession();
 
-  await session.commitTransaction();
+    try {
 
-} catch(error) {
+      session.startTransaction();
 
-  await session.abortTransaction();
+      await User.updateOne(
+        { _id: senderId },
+        {
+          $inc: {
+            balance: -amount
+          }
+        },
+        { session }
+      );
 
-}
+      await User.updateOne(
+        { _id: receiverId },
+        {
+          $inc: {
+            balance: amount
+          }
+        },
+        { session }
+      );
+
+      await session.commitTransaction();
+
+    } catch (error) {
+
+      await session.abortTransaction();
+
+      throw error;
+
+    } finally {
+
+      session.endSession();
+
+    }
+  };
 ```
 
 ---
