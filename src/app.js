@@ -7,11 +7,11 @@ import { HTTP_STATUS } from "./constants/responseConstants.js";
 
 const app = express();
 
-// ── Middleware ──
+// ── Middleware ──────
 app.use(express.json());
 app.use(cors());
 
-// ── Health check ─
+// ── Health check ──────
 app.get("/", (req, res) => {
   res.send("Welcome API Home");
 });
@@ -19,12 +19,12 @@ app.get("/", (req, res) => {
 // ── Feature routes ──────
 app.use("/api/v1/users", userRoutes);
 
-// ── 404 handler (after all routes) ───
+// ── 404 handler (after all routes) ──────
 app.use((req, res, next) => {
   next(new AppError(`Cannot ${req.method} ${req.path}`, HTTP_STATUS.NOT_FOUND));
 });
 
-// ── Global error handler (must be last) ───────
+// ── Global error handler (must be last) ──────
 app.use(errorHandler);
 
 export default app;

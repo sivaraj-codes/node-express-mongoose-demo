@@ -16,7 +16,7 @@ export const errorHandler = (err, req, res, next) => {
 
   // ── Mongoose Duplicate Key Error ──────────────────────────────────────────
   // Thrown by MongoDB when a unique index constraint is violated.
-  // Code 11000 = duplicate key. We handle this at service level too,
+  // Code 11000 = duplicate key.
   // but this is the safety net if it somehow slips through.
   if (err.code === 11000) {
     const field = Object.keys(err.keyValue)[0];
