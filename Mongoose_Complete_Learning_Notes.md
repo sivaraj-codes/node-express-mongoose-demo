@@ -590,6 +590,7 @@ export const transferMoney =
 # 11. Aggregation
 
 Aggregation is MongoDB's data-processing pipeline.
+This is basically MongoDB aggregation syntax unchanged.
 
 ## MongoDB Driver
 
